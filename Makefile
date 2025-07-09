@@ -467,6 +467,7 @@ endif
 		--rust-output src/api/dart/api/api_bridge_generated.rs \
 		--no-add-mod-to-lib \
 		--dart-output=flutter/lib/src/native/ffi/frb \
+		--no-auto-upgrade-dependency \
 		--no-web \
 		--local
 	cd flutter && \
