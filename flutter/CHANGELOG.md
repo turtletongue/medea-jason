@@ -10,6 +10,20 @@ All user visible changes to this project will be documented in this file. This p
 
 See also [`medea-jason` crate `master` changes](https://github.com/instrumentisto/medea-jason/tree/master/CHANGELOG.md).
 
+### Changed
+
+- `ConnectionHandle.onQualityScoreUpdate()` callback now receives `0` quality score if peer is disconnected. ([#212])
+
+[#212]: https://github.com/instrumentisto/medea-jason/pull/212
+
+
+
+
+## [0.10.0] · 2025-07-05
+[0.10.0]: https://github.com/instrumentisto/medea-jason/tree/medea-jason-0.10.0/flutter
+
+See also [`medea-jason` crate 0.10.0 changes](https://github.com/instrumentisto/medea-jason/tree/medea-jason-0.10.0/CHANGELOG.md).
+
 ### Added
 
 - Options to configure audio processing when creating local audio track: ([#206])
@@ -23,6 +37,10 @@ See also [`medea-jason` crate `master` changes](https://github.com/instrumentist
     - `LocalMediaTrack.setAutoGainControlEnabled()`, `LocalMediaTrack.isAutoGainControlEnabled()` to inspect and toggle auto gain control (supported on web and desktop platforms).
     - `LocalMediaTrack.setNoiseSuppressionLevel()`, `LocalMediaTrack.getNoiseSuppressionLevel()` to inspect and configure noise suppression level (only supported on desktop platforms).
     - `LocalMediaTrack.setHighPassFilterEnabled()`, `LocalMediaTrack.isHighPassFilterEnabledO()` to inspect and toggle high-pass filter (only supported on desktop platforms).
+
+### Changed
+
+- `ConnectionHandle.onQualityScoreUpdate()` callback now receives `0` quality score if peer is disconnected. ([#212])
 
 ### Upgraded
 
