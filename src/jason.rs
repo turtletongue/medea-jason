@@ -18,7 +18,7 @@ use crate::{
 /// Responsible for managing shared transports, local media and room
 /// initialization.
 #[derive(Debug)]
-pub struct Jason(Rc<RefCell<Inner>>);
+pub(crate) struct Jason(Rc<RefCell<Inner>>);
 
 /// Inner representation if a [`Jason`].
 #[derive(Debug)]

@@ -154,7 +154,7 @@
 pub mod utils;
 pub mod api;
 pub mod connection;
-pub mod jason;
+mod jason;
 pub mod media;
 pub mod peer;
 pub mod platform;

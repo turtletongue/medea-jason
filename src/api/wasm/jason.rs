@@ -1,8 +1,11 @@
 //! General JS side library interface.
 
-use derive_more::with_trait::From;
+#[cfg(feature = "mockable")]
+use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 
+#[cfg(feature = "mockable")]
+use crate::rpc::WebSocketRpcClient;
 use crate::{
     api::{MediaManagerHandle, RoomHandle},
     jason,
@@ -13,7 +16,7 @@ use crate::{
 /// Responsible for managing shared transports, local media and room
 /// initialization.
 #[wasm_bindgen]
-#[derive(Debug, Default, From)]
+#[derive(Debug, Default)]
 pub struct Jason(jason::Jason);
 
 #[wasm_bindgen]
@@ -48,5 +51,12 @@ impl Jason {
     /// unable to use).
     pub fn dispose(self) {
         self.0.dispose();
+    }
+}
+
+#[cfg(feature = "mockable")]
+impl Jason {
+    pub fn from_rpc(rpc: Option<Rc<WebSocketRpcClient>>) -> Self {
+        Self(jason::Jason::new(rpc))
     }
 }
