@@ -16,12 +16,6 @@ use crate::{
 #[frb(opaque)]
 pub struct Jason(SendWrapper<jason::Jason>);
 
-impl From<jason::Jason> for Jason {
-    fn from(value: jason::Jason) -> Self {
-        Self(SendWrapper::new(value))
-    }
-}
-
 impl Jason {
     /// Instantiates a new [`Jason`] interface to interact with this library.
     #[frb(sync)]
