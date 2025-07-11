@@ -17,7 +17,7 @@ use crate::{
 /// initialization.
 #[wasm_bindgen]
 #[derive(Debug, Default)]
-pub struct Jason(jason::Jason);
+pub struct Jason(jason::JasonImpl);
 
 #[wasm_bindgen]
 impl Jason {
@@ -25,7 +25,7 @@ impl Jason {
     #[must_use]
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        Self(jason::Jason::new(None))
+        Self(jason::JasonImpl::new(None))
     }
 
     /// Creates a new `Room` and returns its [`RoomHandle`].
@@ -57,6 +57,6 @@ impl Jason {
 #[cfg(feature = "mockable")]
 impl Jason {
     pub fn from_rpc(rpc: Option<Rc<WebSocketRpcClient>>) -> Self {
-        Self(jason::Jason::new(rpc))
+        Self(jason::JasonImpl::new(rpc))
     }
 }

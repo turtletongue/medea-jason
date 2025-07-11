@@ -14,14 +14,14 @@ use crate::{
 /// initialization.
 #[derive(Debug)]
 #[frb(opaque)]
-pub struct Jason(SendWrapper<jason::Jason>);
+pub struct Jason(SendWrapper<jason::JasonImpl>);
 
 impl Jason {
     /// Instantiates a new [`Jason`] interface to interact with this library.
     #[frb(sync)]
     #[must_use]
     pub fn new() -> Self {
-        Self(SendWrapper::new(jason::Jason::new(None)))
+        Self(SendWrapper::new(jason::JasonImpl::new(None)))
     }
 
     /// Creates a new [`Room`] and returns its [`RoomHandle`].
