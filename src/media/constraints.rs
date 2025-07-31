@@ -888,7 +888,7 @@ impl MediaStreamSettings {
         // enabled room.
         self.device_audio.enabled &= other.device_audio.enabled;
         self.device_audio.constraints = other.device_audio.constraints;
-        self.display_audio.enabled &= other.display_audio.enabled;
+        self.display_audio.enabled = other.display_audio.enabled;
         self.display_audio.constraints = other.display_audio.constraints;
         self.display_video.constrain(other.display_video);
         self.device_video.constrain(other.device_video);
@@ -927,8 +927,8 @@ impl From<MediaStreamSettings> for Option<MultiSourceTracksConstraints> {
         let is_device_video_enabled = constraints.is_device_video_enabled();
         let is_display_video_enabled = constraints.is_display_video_enabled();
         let is_device_audio_enabled = constraints.is_device_audio_enabled();
-        // TODO: implement for Dart platform when `medea-flutter-webrtc` will
-        //       support display audio constraints.
+        // TODO: implement for Dart platform when
+        //       `instrumentisto/medea-flutter-webrtc#244` will be resolved.
         #[cfg(target_family = "wasm")]
         let is_display_audio_enabled = constraints.is_display_audio_enabled();
 
@@ -963,8 +963,8 @@ impl From<MediaStreamSettings> for Option<MultiSourceTracksConstraints> {
                 .audio(constraints.device_audio.constraints);
         }
 
-        // TODO: implement for Dart platform when `medea-flutter-webrtc` will
-        //       support display audio constraints.
+        // TODO: implement for Dart platform when
+        //       `instrumentisto/medea-flutter-webrtc#244` will be resolved.
         #[cfg(target_family = "wasm")]
         if is_display_audio_enabled {
             display_cons

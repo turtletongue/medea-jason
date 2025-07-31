@@ -4,22 +4,22 @@ use flutter_rust_bridge::{DartOpaque, frb};
 use send_wrapper::SendWrapper;
 use tracerr::Traced;
 
+#[cfg(doc)]
+use crate::{api::LocalMediaTrack, room::Room};
 use crate::{
     api::{Error as DartError, api::ApiMediaStreamSettings},
     media::MediaSourceKind,
     platform::{self, utils::dart_future::IntoDartFuture as _},
     room as core,
 };
-#[cfg(doc)]
-use crate::{media::track::local::LocalMediaTrack, room::Room};
 
 /// External handle to a [`Room`].
 #[derive(Debug)]
 #[frb(opaque)]
-pub struct RoomHandle(pub(crate) SendWrapper<core::RoomHandle>);
+pub struct RoomHandle(pub(crate) SendWrapper<core::RoomHandleImpl>);
 
-impl From<core::RoomHandle> for RoomHandle {
-    fn from(value: core::RoomHandle) -> Self {
+impl From<core::RoomHandleImpl> for RoomHandle {
+    fn from(value: core::RoomHandleImpl) -> Self {
         Self(SendWrapper::new(value))
     }
 }
@@ -104,7 +104,7 @@ impl RoomHandle {
         let room_handle = self.0.clone();
 
         async move {
-            room_handle.mute_audio().await?;
+            room_handle.mute_audio(None).await?;
 
             Ok::<_, Traced<core::ChangeMediaStateError>>(())
         }
@@ -119,7 +119,7 @@ impl RoomHandle {
         let room_handle = self.0.clone();
 
         async move {
-            room_handle.unmute_audio().await?;
+            room_handle.unmute_audio(None).await?;
 
             Ok::<_, Traced<core::ChangeMediaStateError>>(())
         }
@@ -134,7 +134,7 @@ impl RoomHandle {
         let room_handle = self.0.clone();
 
         async move {
-            room_handle.enable_audio().await?;
+            room_handle.enable_audio(None).await?;
 
             Ok::<_, Traced<core::ChangeMediaStateError>>(())
         }
@@ -149,7 +149,7 @@ impl RoomHandle {
         let room_handle = self.0.clone();
 
         async move {
-            room_handle.disable_audio().await?;
+            room_handle.disable_audio(None).await?;
 
             Ok::<_, Traced<core::ChangeMediaStateError>>(())
         }
@@ -260,7 +260,7 @@ impl RoomHandle {
         let room_handle = self.0.clone();
 
         async move {
-            room_handle.enable_remote_audio().await?;
+            room_handle.enable_remote_audio(None).await?;
 
             Ok::<_, Traced<core::ChangeMediaStateError>>(())
         }
@@ -275,7 +275,7 @@ impl RoomHandle {
         let room_handle = self.0.clone();
 
         async move {
-            room_handle.disable_remote_audio().await?;
+            room_handle.disable_remote_audio(None).await?;
 
             Ok::<_, Traced<core::ChangeMediaStateError>>(())
         }
@@ -336,7 +336,7 @@ impl RoomHandle {
     ///
     /// # Errors
     ///
-    /// If the [`core::RoomHandle::on_new_connection()`] method errors.
+    /// If the [`core::RoomHandleImpl::on_new_connection()`] method errors.
     ///
     /// [`Connection`]: connection::Connection
     #[frb(sync)]
@@ -352,7 +352,7 @@ impl RoomHandle {
     ///
     /// # Errors
     ///
-    /// If the [`core::RoomHandle::on_close()`] method errors.
+    /// If the [`core::RoomHandleImpl::on_close()`] method errors.
     #[frb(sync)]
     pub fn on_close(&self, cb: DartOpaque) -> Result<(), DartOpaque> {
         self.0
@@ -361,8 +361,8 @@ impl RoomHandle {
             .map_err(Into::into)
     }
 
-    /// Sets a callback to be invoked once a new [`LocalMediaTrack`] is added
-    /// to the provided [`Room`].
+    /// Sets a callback to be invoked once a new [`LocalMediaTrack`] is
+    /// added to the provided [`Room`].
     ///
     /// This might happen in such cases:
     /// 1. Media server initiates a media request.
@@ -372,7 +372,7 @@ impl RoomHandle {
     ///
     /// # Errors
     ///
-    /// If the [`core::RoomHandle::on_local_track()`] method errors.
+    /// If the [`core::RoomHandleImpl::on_local_track()`] method errors.
     ///
     /// [`enable_audio()`]: RoomHandle::enable_audio
     /// [`enable_video()`]: RoomHandle::enable_video
@@ -391,7 +391,7 @@ impl RoomHandle {
     ///
     /// # Errors
     ///
-    /// If the [`core::RoomHandle::on_connection_loss()`] method errors.
+    /// If the [`core::RoomHandleImpl::on_connection_loss()`] method errors.
     #[frb(sync)]
     pub fn on_connection_loss(&self, cb: DartOpaque) -> Result<(), DartOpaque> {
         self.0
@@ -404,7 +404,7 @@ impl RoomHandle {
     ///
     /// # Errors
     ///
-    /// If the [`core::RoomHandle::on_failed_local_media()`] method errors.
+    /// If the [`core::RoomHandleImpl::on_failed_local_media()`] method errors.
     #[frb(sync)]
     pub fn on_failed_local_media(
         &self,
