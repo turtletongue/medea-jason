@@ -266,9 +266,14 @@ impl Member {
                             self.enabled_audio = true;
                         }
                         Some(MediaSourceKind::Display) => {
+                            self.update_send_media_state(
+                                Some(MediaKind::Video),
+                                Some(MediaSourceKind::Display),
+                                enabled,
+                            );
                             self.room
                                 .enable_media_send(
-                                   MediaKind::Video,
+                                    MediaKind::Video,
                                     Some(MediaSourceKind::Display),
                                     maybe_await,
                                 )
@@ -282,8 +287,13 @@ impl Member {
                                 )
                                 .await?;
                             self.enabled_audio = true;
-                        },
+                        }
                         None => {
+                            self.update_send_media_state(
+                                Some(MediaKind::Video),
+                                Some(MediaSourceKind::Display),
+                                enabled,
+                            );
                             self.room
                                 .enable_media_send(
                                     MediaKind::Video,
@@ -293,11 +303,7 @@ impl Member {
                                 .await?;
                             self.enabled_video = true;
                             self.room
-                                .enable_media_send(
-                                    kind,
-                                    None,
-                                    maybe_await,
-                                )
+                                .enable_media_send(kind, None, maybe_await)
                                 .await?;
                             self.enabled_audio = true;
                         }
